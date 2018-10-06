@@ -6,10 +6,8 @@
 				show_404();
 			}
 			$data['title'] = ucfirst($page);
-			$data['titulo_de_pagina'] = 'Sistema de administración de protocolos';
 
-			$this->load->helper('url');
-			$this->load->view('templates/header',$data);
+			$this->load->view('templates/header');
 			$this->load->view('pages/'.$page, $data);
 			$this->load->view('templates/footer');
 		}
