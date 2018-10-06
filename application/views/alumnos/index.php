@@ -1,4 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+<a href="<?php echo base_url(); ?>alumnos/nuevo" class="btn btn-secondary btn-light active" role="button" aria-pressed="true">Nuevo</a>
 <table class="table table-hover table-stripped">
 	<thead>
 		<tr>
