@@ -5,39 +5,45 @@
 		}
 
 		public function get_alumnos(){
-			$this->db->order_by('alumnos.alu_ID', 'DESC');
-			$query = $this->db->get('alumnos');
+			$this->db->where('alu_activo', 1);
+			$this->db->select('alu_ID, alu_nombre, alu_numCuenta, alu_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
+			$this->db->order_by('alumnos.alu_numCuenta');
+			$this->db->from('alumnos');
+			$this->db->join('licenciaturas', 'alumnos.alu_licenciatura = licenciaturas.lic_ID');
+			$query = $this->db->get();
 			return $query->result_array();
 		}
 
-		/*
-		public function create_post($post_image){
-			$slug = url_title($this->input->post('title'));
-
+		public function nuevo_alumno(){
 			$data = array(
-				'title' => $this->input->post('title'),
-				'slug' => $slug,
-				'body' => $this->input->post('body'),
-				'category_id' => $this->input->post('category_id'),
-				'user_id' => $this->session->userdata('user_id'),
-				'post_image' => $post_image
+				'alu_nombre' => $this->input->post('alu_nombre'),
+				'alu_numCuenta' => $this->input->post('alu_numCuenta'),
+				'alu_user' => $this->input->post('alu_user'),
+				'alu_correoE' => $this->input->post('alu_correoE'),
+				'alu_licenciatura' => $this->input->post('alu_licenciatura')
 			);
-
-			return $this->db->insert('posts', $data);
+			if($this->input->post('alu_egresado') == 1){
+				$data['alu_egresado'] = 1;
+			}else{
+				$data['alu_egresado'] = 0;
+			}
+			$data['alu_activo'] = 1;
+			$data['alu_pass'] = 'panyqueso';
+			return $this->db->insert('alumnos', $data);
 		}
 
-		public function delete_post($id){
-			$image_file_name = $this->db->select('post_image')->get_where('posts', array('id' => $id))->row()->post_image;
-			$cwd = getcwd(); // save the current working directory
-			$image_file_path = $cwd."\\assets\\images\\posts\\";
-			chdir($image_file_path);
-			unlink($image_file_name);
-			chdir($cwd); // Restore the previous working directory
-			$this->db->where('id', $id);
-			$this->db->delete('posts');
+		public function borra_alumno($id){
+			$this->db->where('alu_ID', $id);
+			$this->db->from('alumnos');
+			$query = $this->db->get();
+			$data = $query->row_array();
+			$data['alu_activo'] = 0;
+			$this->db->where('alu_ID', $id);
+			$this->db->update('alumnos', $data);
 			return true;
 		}
 
+		/*
 		public function update_post(){
 			$slug = url_title($this->input->post('title'));
 

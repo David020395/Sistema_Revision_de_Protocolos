@@ -2,7 +2,7 @@
 	class Alumnos extends CI_Controller{
 
 		public function index(){	
-			$data['title'] = 'Listado de Alumnos';
+			$data['title'] = 'Administración de alumnos';
 
 			$data['alumnos'] = $this->alumnos_model->get_alumnos();
 			
@@ -10,82 +10,33 @@
 			$this->load->view('alumnos/index', $data);
 			$this->load->view('templates/footer');
 		}
-/*
-		public function view($slug = NULL){
-			$data['post'] = $this->post_model->get_posts($slug);
-			$post_id = $data['post']['id'];
-			$data['comments'] = $this->comment_model->get_comments($post_id);
 
-			if(empty($data['post'])){
-				show_404();
-			}
+		public function nuevo(){
+			$data['title'] = 'Registrar nuevo alumno';
 
-			$data['title'] = $data['post']['title'];
+			$data['licenciaturas'] = $this->licenciaturas_model->get_licenciaturas();
 
-			$this->load->view('templates/header');
-			$this->load->view('posts/view', $data);
-			$this->load->view('templates/footer');
-		}
-
-		public function create(){
-			// Check login
-			if(!$this->session->userdata('logged_in')){
-				redirect('users/login');
-			}
-
-			$data['title'] = 'Create Post';
-
-			$data['categories'] = $this->post_model->get_categories();
-
-			$this->form_validation->set_rules('title', 'Title', 'required');
-			$this->form_validation->set_rules('body', 'Body', 'required');
+			$this->form_validation->set_rules('alu_nombre', 'Nombre', 'required');
+			$this->form_validation->set_rules('alu_numCuenta', 'Numero de Cuenta', 'required');
+			$this->form_validation->set_rules('alu_user', 'Usuario', 'required');
+			$this->form_validation->set_rules('alu_correoE', 'Correo Electronico', 'required');
+			$this->form_validation->set_rules('alu_licenciatura', 'Licenciatura', 'required');
 
 			if($this->form_validation->run() === FALSE){
 				$this->load->view('templates/header');
-				$this->load->view('posts/create', $data);
+				$this->load->view('alumnos/nuevo', $data);
 				$this->load->view('templates/footer');
 			} else {
-				// Upload Image
-				$config['upload_path'] = './assets/images/posts';
-				$config['allowed_types'] = 'gif|jpg|png';
-				$config['max_size'] = '2048';
-				$config['max_width'] = '2000';
-				$config['max_height'] = '2000';
-
-				$this->load->library('upload', $config);
-
-				if(!$this->upload->do_upload()){
-					$errors = array('error' => $this->upload->display_errors());
-					$post_image = 'noimage.jpg';
-				} else {
-					$data = array('upload_data' => $this->upload->data());
-					$post_image = $_FILES['userfile']['name'];
-				}
-
-				$this->post_model->create_post($post_image);
-
-				// Set message
-				$this->session->set_flashdata('post_created', 'Your post has been created');
-
-				redirect('posts');
+				$this->alumnos_model->nuevo_alumno();
+				redirect('alumnos');
 			}
 		}
 
-		public function delete($id){
-			// Check login
-			if(!$this->session->userdata('logged_in')){
-				redirect('users/login');
-			}
-
-			$this->post_model->delete_post($id);
-
-			// Set message
-			$this->session->set_flashdata('post_deleted', 'Your post has been deleted');
-
-			redirect('posts');
+		public function borrar($id){
+			$this->alumnos_model->borra_alumno($id);
+			redirect('alumnos');
 		}
-
-		public function edit($slug){
+/*		public function edit($slug){
 			// Check login
 			if(!$this->session->userdata('logged_in')){
 				redirect('users/login');
