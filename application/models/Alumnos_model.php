@@ -6,19 +6,21 @@
 
 		public function get_alumnos(){
 			$this->db->where('alu_activo', 1);
-			$this->db->select('alu_ID, alu_nombre, alu_numCuenta, alu_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
+			$this->db->select('alu_ID, alu_nombre, alu_numCuenta, alu_credencial, cre_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
 			$this->db->order_by('alumnos.alu_numCuenta');
 			$this->db->from('alumnos');
 			$this->db->join('licenciaturas', 'alumnos.alu_licenciatura = licenciaturas.lic_ID');
+			$this->db->join('credenciales', 'alumnos.alu_credencial = credenciales.cre_ID');
 			$query = $this->db->get();
 			return $query->result_array();
 		}
 
 		public function get_alumno($id){
 			$this->db->where('alu_ID', $id);
-			$this->db->select('alu_ID, alu_nombre, alu_licenciatura, alu_numCuenta, alu_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
+			$this->db->select('alu_ID, alu_nombre, alu_licenciatura, alu_numCuenta, alu_credencial, cre_user as alu_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
 			$this->db->from('alumnos');
 			$this->db->join('licenciaturas', 'alumnos.alu_licenciatura = licenciaturas.lic_ID');
+			$this->db->join('credenciales', 'alumnos.alu_credencial = credenciales.cre_ID');
 			$query = $this->db->get();
 			return $query->row_array();
 		}
@@ -27,7 +29,6 @@
 			$data = array(
 				'alu_nombre' => $this->input->post('alu_nombre'),
 				'alu_numCuenta' => $this->input->post('alu_numCuenta'),
-				'alu_user' => $this->input->post('alu_user'),
 				'alu_correoE' => $this->input->post('alu_correoE'),
 				'alu_licenciatura' => $this->input->post('alu_licenciatura')
 			);
@@ -37,8 +38,8 @@
 				$data['alu_egresado'] = 0;
 			}
 			$data['alu_activo'] = 1;
-			$data['alu_pass'] = 'panyqueso';
-			return $this->db->insert('alumnos', $data);
+			$idC = $this->nueva_credencial();			
+			return $data['alu_credencial'] = $idC['cre_ID'];
 		}
 
 		public function borra_alumno($id){
@@ -68,5 +69,23 @@
 			}
 			$this->db->where('alu_ID', $this->input->post('alu_ID'));
 			return $this->db->update('alumnos', $data);
+		}
+
+		public function nueva_credencial(){
+			$data = array(
+				'cre_user' => $this->input->post('alu_user'),
+				'cre_type' => 3
+			);
+			$data['cre_pass'] = 'panyqueso';
+			$this->db->insert('credenciales', $data);
+			$this->db->select_max('cre_ID');
+			$query = $this->db->get('credenciales');
+			$id = $query->row_array();
+			$this->db->where('cre_user', $data['cre_user']);
+			$this->db->where('cre_pass', $data['cre_pass']);
+			$this->db->where('cre_ID', $id['cre_ID']);
+			$this->db->from('credenciales');
+			$query = $this->db->get();
+			return $query->row_array();
 		}
 	}

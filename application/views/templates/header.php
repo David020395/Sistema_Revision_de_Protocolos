@@ -12,23 +12,44 @@
 		<link rel="stylesheet" type="text/css" href='<?php echo base_url('assets/css/menu.css'); ?>' />
 	</head>
 	<body> <!--Este BODY se cierra en footer.php-->
-		<ul class="sidenav">
-			<li><a href="<?php echo base_url(); ?>">Home</a></li>
-			<li class="dropdown">
-				<a href="javascript:void(0)" class="dropbtn">Administración</a>
-				<span class="dropdown-content">
-					<a href="">Protocolos</a>
-					<a href="">Solicitudes</a>
-					<a href="<?php echo base_url(); ?>alumnos">Alumnos</a>
-				</span>
-			</li>
-			<li class="dropdown">
-				<a href="javascript:void(0)" class="dropbtn">Sesión</a>
-				<span class="dropdown-content">
-					<a href="">Administrar cuenta</a>
-					<a href="">Cerrar sesión</a>
-				</span>
-			</li>
-		</ul>
+		<img src="<?php echo base_url(); ?>assets/img/bannerFI.png" style="width:100%;">
+		<?php if($this->session->userdata('logged_in')): ?>
+			<ul class="sidenav">
+				<li><a href="<?php echo base_url(); ?>">Inicio</a></li>
+				<li class="dropdown">
+					<a href="javascript:void(0)" class="dropbtn">Administración</a>
+					<span class="dropdown-content">
+						<a href="">Protocolos</a>
+						<a href="">Solicitudes</a>
+						<a href="<?php echo base_url(); ?>alumnos">Alumnos</a>
+					</span>
+				</li>
+				<li class="dropdown">
+					<a href="javascript:void(0)" class="dropbtn">Sesión</a>
+					<span class="dropdown-content">
+						<a href="">Administrar cuenta</a>
+						<a href="cred/logout">Cerrar sesión</a>
+					</span>
+				</li>
+			</ul>
+		<?php endif; ?>
 		<div class="page_content"><!--PAGE_CONTENT-->
 			<div id="container">
+				<?php if($this->session->flashdata('alumno_creado')): ?>
+					<?php echo '<p class="alert alert-success">'.$this->session->flashdata('alumno_creado').'</p>' ?>
+				<?php endif; ?>
+				<?php if($this->session->flashdata('alumno_editado')): ?>
+					<?php echo '<p class="alert alert-success">'.$this->session->flashdata('alumno_editado').'</p>' ?>
+				<?php endif; ?>
+				<?php if($this->session->flashdata('alumno_borrado')): ?>
+					<?php echo '<p class="alert alert-success">'.$this->session->flashdata('alumno_borrado').'</p>' ?>
+				<?php endif; ?>
+				<?php if($this->session->flashdata('login_correcto')): ?>
+					<?php echo '<p class="alert alert-success">'.$this->session->flashdata('login_correcto').'</p>' ?>
+				<?php endif; ?>
+				<?php if($this->session->flashdata('login_failo')): ?>
+					<?php echo '<p class="alert alert-danger">'.$this->session->flashdata('login_failo').'</p>' ?>
+				<?php endif; ?>
+				<?php if($this->session->flashdata('logout')): ?>
+					<?php echo '<p class="alert alert-success">'.$this->session->flashdata('logout').'</p>' ?>
+				<?php endif; ?>
