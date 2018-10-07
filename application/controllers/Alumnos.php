@@ -36,44 +36,25 @@
 			$this->alumnos_model->borra_alumno($id);
 			redirect('alumnos');
 		}
-/*		public function edit($slug){
-			// Check login
-			if(!$this->session->userdata('logged_in')){
-				redirect('users/login');
-			}
 
-			$data['post'] = $this->post_model->get_posts($slug);
+		public function editar($id){
+			$data['alumno'] = $this->alumnos_model->get_alumno($id);
 
-			// Check user
-			if($this->session->userdata('user_id') != $this->post_model->get_posts($slug)['user_id']){
-				redirect('posts');
+			$data['licenciaturas'] = $this->licenciaturas_model->get_licenciaturas();
 
-			}
-
-			$data['categories'] = $this->post_model->get_categories();
-
-			if(empty($data['post'])){
+			if(empty($data['alumno'])){
 				show_404();
 			}
 
-			$data['title'] = 'Edit Post';
+			$data['title'] = 'Editar Alumno';
 
 			$this->load->view('templates/header');
-			$this->load->view('posts/edit', $data);
+			$this->load->view('alumnos/editar', $data);
 			$this->load->view('templates/footer');
 		}
 
-		public function update(){
-			// Check login
-			if(!$this->session->userdata('logged_in')){
-				redirect('users/login');
-			}
-
-			$this->post_model->update_post();
-
-			// Set message
-			$this->session->set_flashdata('post_updated', 'Your post has been updated');
-
-			redirect('posts');
-		}*/
+		public function actualizar(){
+			$this->alumnos_model->actualizar();
+			redirect('alumnos');
+		}
 	}
