@@ -2,6 +2,10 @@
 
 $route['alumnos/nuevo'] = 'alumnos/nuevo';
 $route['alumnos'] = 'alumnos/index';
+$route['profesores'] = 'profesores/index';
+$route['protocolos'] = 'protocolos/index';
+
+$route['cred/change_user_fields'] = 'cred/change_user_fields';
 
 $route['default_controller'] = 'pages/view';
 

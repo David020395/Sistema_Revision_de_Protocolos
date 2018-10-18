@@ -38,8 +38,9 @@
 				$data['alu_egresado'] = 0;
 			}
 			$data['alu_activo'] = 1;
-			$idC = $this->nueva_credencial();			
-			return $data['alu_credencial'] = $idC['cre_ID'];
+			$idC = $this->nueva_credencial();
+			$data['alu_credencial'] = $idC['cre_ID'];
+			return $this->db->insert('alumnos', $data);
 		}
 
 		public function borra_alumno($id){
@@ -87,5 +88,31 @@
 			$this->db->from('credenciales');
 			$query = $this->db->get();
 			return $query->row_array();
+		}
+
+		public function get_id_for_cred($id){
+			$this->db->where('alu_credencial', $id);
+			$this->db->select('alu_ID');
+			$this->db->from('alumnos');
+			$query = $this->db->get();
+			return $query->row_array();
+		}
+
+		public function get_email_alumno($id){
+			$this->db->where('alu_ID', $id);
+			$this->db->select('alu_correoE');
+			$this->db->from('alumnos');
+			$query = $this->db->get();
+			return $query->row_array();
+		}
+
+		public function actualizarEmail($id){
+			$this->db->where('alu_ID', $id);
+			$this->db->from('alumnos');
+			$query = $this->db->get();
+			$data = $query->row_array();
+			$data['alu_correoE'] = $this->input->post('correoE');
+			$this->db->where('alu_ID', $id);
+			return $this->db->update('alumnos', $data);
 		}
 	}

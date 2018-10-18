@@ -16,19 +16,55 @@
 		<?php if($this->session->userdata('logged_in')): ?>
 			<ul class="sidenav">
 				<li><a href="<?php echo base_url(); ?>">Inicio</a></li>
-				<li class="dropdown">
-					<a href="javascript:void(0)" class="dropbtn">Administración</a>
-					<span class="dropdown-content">
-						<a href="">Protocolos</a>
-						<a href="">Solicitudes</a>
-						<a href="<?php echo base_url(); ?>alumnos">Alumnos</a>
-					</span>
-				</li>
+				<?php if(in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))): ?>
+					<li class="dropdown">
+						<a href="javascript:void(0)" class="dropbtn">Administración</a>
+						<span class="dropdown-content">
+							<?php echo '<a href="'.base_url().'protocolos">Protocolos</a>' ?>
+							<?php echo '<a href="'.base_url().'protocolos/solicitudes">Solicitudes</a>' ?>
+							<?php echo '<a href="'.base_url().'alumnos">Alumnos</a>' ?>
+						</span>
+					</li>
+				<?php endif; ?>
+				<?php if(in_array(Array ( 'role' => 'adminC' ), $this->session->userdata('roles'))): ?>
+					<li class="dropdown">
+						<a href="javascript:void(0)" class="dropbtn">Administración</a>
+						<span class="dropdown-content">
+							<?php echo '<a href="'.base_url().'protocolos">Protocolos</a>' ?>
+							<?php echo '<a href="'.base_url().'profesores">Profesores</a>' ?>
+						</span>
+					</li>
+				<?php endif; ?>
+				<?php if(in_array(Array ( 'role' => 'alumno' ), $this->session->userdata('roles'))): ?>
+					<li class="dropdown">
+						<a href="javascript:void(0)" class="dropbtn">Protocolos</a>
+						<span class="dropdown-content">
+							<?php echo '<a href="'.base_url().'protocolos/nuevo">Registrar nuevo</a>' ?>
+							<?php echo '<a href="'.base_url().'protocolos">Mis protocolos</a>' ?>
+						</span>
+					</li>
+				<?php endif; ?>
+				<?php if(in_array(Array ( 'role' => 'crevisor' ), $this->session->userdata('roles'))): ?>
+					<li class="dropdown">
+						<a href="javascript:void(0)" class="dropbtn">Administración</a>
+						<span class="dropdown-content">
+							<?php echo '<a href="'.base_url().'protocolos/asignados">Protocolos para preparar</a>' ?>
+						</span>
+					</li>
+				<?php endif; ?>
+				<?php if(in_array(Array ( 'role' => 'revisor' ), $this->session->userdata('roles'))): ?>
+					<li class="dropdown">
+						<a href="javascript:void(0)" class="dropbtn">Protocolos</a>
+						<span class="dropdown-content">
+							<?php echo '<a href="'.base_url().'protocolos">Protocolos para revision</a>' ?>
+						</span>
+					</li>
+				<?php endif; ?>
 				<li class="dropdown">
 					<a href="javascript:void(0)" class="dropbtn">Sesión</a>
 					<span class="dropdown-content">
-						<a href="">Administrar cuenta</a>
-						<a href="cred/logout">Cerrar sesión</a>
+						<a href="<?php echo base_url(); ?>cred/change_user_fields">Administrar cuenta</a>
+						<a href="<?php echo base_url(); ?>cred/logout">Cerrar sesión</a>
 					</span>
 				</li>
 			</ul>

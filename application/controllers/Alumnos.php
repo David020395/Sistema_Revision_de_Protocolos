@@ -5,6 +5,9 @@
 			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
 			}
+			if(!in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))){
+				redirect('cred/e403');
+			}
 
 			$data['title'] = 'Administración de alumnos';
 
@@ -18,6 +21,9 @@
 		public function nuevo(){
 			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
+			}
+			if(!in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))){
+				redirect('cred/e403');
 			}
 
 			$data['title'] = 'Registrar nuevo alumno';
@@ -45,6 +51,9 @@
 			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
 			}
+			if(!in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))){
+				redirect('cred/e403');
+			}
 
 			$this->alumnos_model->borra_alumno($id);
 			$this->session->set_flashdata('alumno_borrado','Alumno borrado exitosamente.');
@@ -54,6 +63,9 @@
 		public function editar($id){
 			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
+			}
+			if(!in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))){
+				redirect('cred/e403');
 			}
 
 			$data['alumno'] = $this->alumnos_model->get_alumno($id);
@@ -75,6 +87,9 @@
 			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
 			}
+			if(!in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))){
+				redirect('cred/e403');
+			}
 
 			$this->alumnos_model->actualizar();
 			$this->session->set_flashdata('alumno_editado','Alumno editado exitosamente.');
@@ -84,6 +99,9 @@
 		public function revisar_usuario_disponible($username){
 			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
+			}
+			if(!in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))){
+				redirect('cred/e403');
 			}
 
 			$this->form_validation->set_message('revisar_usuario_disponible','Usuario no disponible. Elige uno diferente');
