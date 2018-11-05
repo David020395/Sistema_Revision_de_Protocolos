@@ -12,86 +12,60 @@
 		<link rel="stylesheet" type="text/css" href='<?php echo base_url('assets/css/menu.css'); ?>' />
 	</head>
 	<body> <!--Este BODY se cierra en footer.php-->
-		<img src="<?php echo base_url(); ?>assets/img/bannerFI.png" style="width:100%;">
+		<img class="imgprimbanner" src="<?php echo base_url(); ?>assets/img/bannerFI.png">
 		<?php if($this->session->userdata('logged_in')): ?>
-			<button class="accordion">Section 1</button>
-			<div class="panel">
-			  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-			</div>
-			<br/>
-			<button class="accordion">Section 2</button>
-			<div class="panel">
-			  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-			</div>
-			<br/>
-			<button class="accordion">Section 3</button>
-			<div class="panel">
-			  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-			</div>
-
-			<script>
-			var acc = document.getElementsByClassName("accordion");
-			var i;
-
-			for (i = 0; i < acc.length; i++) {
-			    acc[i].addEventListener("click", function() {
-			        this.classList.toggle("active");
-			        var panel = this.nextElementSibling;
-			        if (panel.style.display === "block") {
-			            panel.style.display = "none";
-			        } else {
-			            panel.style.display = "block";
-			        }
-			    });
-			}
-			</script>
-			<ul class="sidenav">
-				<li><a href="<?php echo base_url(); ?>">Inicio</a></li>
+			<div class="menudesplegable">
+				<button onclick="location.href ='<?php echo base_url(); ?>';" class="accordion1">Inicio</button><br/>
 				<?php if(in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))): ?>
-					<li class="dropdown">
-						<a href="javascript:void(0)" class="dropbtn">Administración</a>
-						<span class="dropdown-content">
-							<?php echo '<a href="'.base_url().'protocolos">Protocolos</a>' ?>
-							<?php echo '<a href="'.base_url().'protocolos/solicitudes">Solicitudes</a>' ?>
-							<?php echo '<a href="'.base_url().'alumnos">Alumnos</a>' ?>
-						</span>
-					</li>
+					<button class="accordion">Administración</button>
+					<div class="panel">
+					  	<?php echo '<a href="'.base_url().'protocolos">Protocolos</a>' ?><br/>
+						<?php echo '<a href="'.base_url().'protocolos/solicitudes">Solicitudes</a>' ?><br/>
+						<?php echo '<a href="'.base_url().'alumnos">Alumnos</a>' ?>
+					</div><br/>
 				<?php endif; ?>
 				<?php if(in_array(Array ( 'role' => 'adminC' ), $this->session->userdata('roles'))): ?>
-					<li class="dropdown">
-						<a href="javascript:void(0)" class="dropbtn">Administración</a>
-						<span class="dropdown-content">
-							<?php echo '<a href="'.base_url().'protocolos">Protocolos</a>' ?>
-							<!--<?php echo '<a href="'.base_url().'protocolos/asignados">Protocolos para preparar</a>' ?>-->
-							<?php echo '<a href="'.base_url().'profesores">Profesores</a>' ?>
-						</span>
-					</li>
+					<button class="accordion">Administración</button>
+					<div class="panel">
+					  	<?php echo '<a href="'.base_url().'protocolos">Protocolos</a>' ?><br/>
+						<!--<?php echo '<a href="'.base_url().'protocolos/asignados">Protocolos para preparar</a>' ?>-->
+						<?php echo '<a href="'.base_url().'profesores">Profesores</a>' ?>
+					</div><br/>
 				<?php endif; ?>
 				<?php if(in_array(Array ( 'role' => 'alumno' ), $this->session->userdata('roles'))): ?>
-					<li class="dropdown">
-						<a href="javascript:void(0)" class="dropbtn">Protocolos</a>
-						<span class="dropdown-content">
-							<?php echo '<a href="'.base_url().'protocolos/nuevo">Registrar nuevo</a>' ?>
-							<?php echo '<a href="'.base_url().'protocolos">Mis protocolos</a>' ?>
-						</span>
-					</li>
+					<button class="accordion">Protocolos</button>
+					<div class="panel">
+					  	<?php echo '<a href="'.base_url().'protocolos/nuevo">Registrar nuevo</a>' ?><br/>
+						<?php echo '<a href="'.base_url().'protocolos">Mis protocolos</a>' ?>
+					</div><br/>
 				<?php endif; ?>
 				<?php if(in_array(Array ( 'role' => 'revisor' ), $this->session->userdata('roles'))): ?>
-					<li class="dropdown">
-						<a href="javascript:void(0)" class="dropbtn">Protocolos</a>
-						<span class="dropdown-content">
-							<?php echo '<a href="'.base_url().'protocolos">Protocolos para revision</a>' ?>
-						</span>
-					</li>
+					<button class="accordion">Protocolos</button>
+					<div class="panel">
+					  	<?php echo '<a href="'.base_url().'protocolos">Protocolos para revision</a>' ?>
+					</div><br/>
 				<?php endif; ?>
-				<li class="dropdown">
-					<a href="javascript:void(0)" class="dropbtn">Sesión</a>
-					<span class="dropdown-content">
-						<a href="<?php echo base_url(); ?>cred/change_user_fields">Administrar cuenta</a>
-						<a href="<?php echo base_url(); ?>cred/logout">Cerrar sesión</a>
-					</span>
-				</li>
-			</ul>
+				<button class="accordion">Sesión</button>
+				<div class="panel">
+				  	<a href="<?php echo base_url(); ?>cred/change_user_fields">Administrar cuenta</a><br/>
+					<a href="<?php echo base_url(); ?>cred/logout">Cerrar sesión</a>
+				</div>
+				<script>
+					var acc = document.getElementsByClassName("accordion");
+					var i;
+					for (i = 0; i < acc.length; i++) {
+					    acc[i].addEventListener("click", function() {
+					        this.classList.toggle("active");
+					        var panel = this.nextElementSibling;
+					        if (panel.style.display === "block") {
+					            panel.style.display = "none";
+					        } else {
+					            panel.style.display = "block";
+					        }
+					    });
+					}
+				</script>
+			</div>
 		<?php endif; ?>
 		<div class="page_content"><!--PAGE_CONTENT-->
 			<div id="container">
