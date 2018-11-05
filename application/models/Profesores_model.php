@@ -29,6 +29,8 @@
 		public function nuevo_profesor(){
 			$data = array(
 				'pro_nombre' => $this->input->post('alu_nombre'),
+				'pro_ap' => $this->input->post('alu_ap'),
+				'pro_am' => $this->input->post('alu_am'),
 				'pro_tipo' => $this->input->post('pro_tipo'),
 				'pro_correoE' => $this->input->post('alu_correoE'),
 				'pro_indicadorExito' => 50,
@@ -77,7 +79,7 @@
 
 		public function get_profesor($id){
 			$this->db->where('pro_ID', $id);
-			$this->db->select('pro_ID, pro_nombre, pro_credencial, cre_user as pro_user, pro_correoE, pro_comite, pro_tipo,  pro_trabajosActivos');
+			$this->db->select('pro_ID, pro_ap, pro_am, pro_nombre, pro_credencial, cre_user as pro_user, pro_correoE, pro_comite, pro_tipo,  pro_trabajosActivos');
 			$this->db->from('profesores');
 			$this->db->join('credenciales', 'profesores.pro_credencial = credenciales.cre_ID');
 			$query = $this->db->get();
@@ -90,6 +92,8 @@
 			$query = $this->db->get();
 			$data = $query->row_array();
 			$data['pro_nombre'] = $this->input->post('pro_nombre');
+			$data['pro_ap'] = $this->input->post('pro_ap');
+			$data['pro_am'] = $this->input->post('pro_am');
 			$data['pro_correoE'] = $this->input->post('pros_correoE');
 			$data['pro_tipo'] = $this->input->post('pro_tipo');
 			if($this->input->post('pro_comite') == 1){

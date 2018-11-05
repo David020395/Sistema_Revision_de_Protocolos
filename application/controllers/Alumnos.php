@@ -31,6 +31,7 @@
 			$data['licenciaturas'] = $this->licenciaturas_model->get_licenciaturas();
 
 			$this->form_validation->set_rules('alu_nombre', 'Nombre', 'required');
+			$this->form_validation->set_rules('alu_ap', 'Apellido Paterno', 'required');
 			$this->form_validation->set_rules('alu_numCuenta', 'Numero de Cuenta', 'required');
 			$this->form_validation->set_rules('alu_user', 'Usuario', 'required|callback_revisar_usuario_disponible');
 			$this->form_validation->set_rules('alu_correoE', 'Correo Electronico', 'required');

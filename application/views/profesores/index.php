@@ -8,6 +8,8 @@
 		<tr>
 			<th scope="col">#</th>
 			<th scope="col">Nombre</th>
+			<th scope="col"></th>
+			<th scope="col"></th>
 			<th scope="col">Tipo</th>
 			<th scope="col">Comite</th>
 			<th scope="col">Protocolos activos</th>
@@ -18,6 +20,8 @@
 		<?php  foreach($profesores as $prof) : ?>
 			<tr>
 				<td><?php echo $prof['pro_ID'] ?></td>
+				<td><?php echo $prof['pro_ap'] ?></td>
+				<td><?php echo $prof['pro_am'] ?></td>
 				<td><?php echo $prof['pro_nombre'] ?></td>
 				<td><?php echo $prof['pro_tipo'] ?></td>
 				<td><span class="<?php if($prof['pro_comite']) echo 'glyphicon glyphicon-ok'; else echo 'glyphicon glyphicon-minus'; ?>"></span></td>

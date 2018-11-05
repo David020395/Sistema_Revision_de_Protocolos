@@ -4,6 +4,14 @@
 
 <?php echo form_open_multipart('profesores/nuevo'); ?>
   <div class="form-group">
+    <label>Apellido Paterno</label>
+    <input type="text" class="form-control" name="pro_ap" placeholder="Apellido Paterno">
+  </div>
+  <div class="form-group">
+    <label>Apellido Materno</label>
+    <input type="text" class="form-control" name="pro_am" placeholder="Apellido Materno">
+  </div>
+  <div class="form-group">
     <label>Nombre</label>
     <input type="text" class="form-control" name="pro_nombre" placeholder="Nombre">
   </div>

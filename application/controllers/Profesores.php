@@ -26,6 +26,7 @@
 			$data['title'] = 'Registrar nuevo profesor';
 
 			$this->form_validation->set_rules('pro_nombre', 'Nombre', 'required');
+			$this->form_validation->set_rules('pro_ap', 'Apellido Paterno', 'required');
 			$this->form_validation->set_rules('pro_correoE', 'Correo Electronico', 'required');
 			$this->form_validation->set_rules('pro_user', 'Usuario', 'required|callback_revisar_usuario_disponible');
 			$this->form_validation->set_rules('pro_tipo', 'Tipo de profesor', 'required');

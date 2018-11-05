@@ -4,12 +4,20 @@
 
 <?php echo form_open_multipart('alumnos/nuevo'); ?>
   <div class="form-group">
-    <label>Nombre</label>
-    <input type="text" class="form-control" name="alu_nombre" placeholder="Nombre">
-  </div>
-  <div class="form-group">
     <label>Numero de cuenta</label>
     <input type="text" class="form-control" name="alu_numCuenta" placeholder="Numero de cuenta">
+  </div>
+  <div class="form-group">
+    <label>Apellido Paterno</label>
+    <input type="text" class="form-control" name="alu_ap" placeholder="Apellido Paterno">
+  </div>
+  <div class="form-group">
+    <label>Apellido Materno</label>
+    <input type="text" class="form-control" name="alu_am" placeholder="Apellido Materno">
+  </div>
+  <div class="form-group">
+    <label>Nombre(s)</label>
+    <input type="text" class="form-control" name="alu_nombre" placeholder="Nombre(s)">
   </div>
   <div class="form-group">
     <label>Usuario</label>
@@ -26,6 +34,14 @@
 		  	<option value="<?php echo $licenciatura['lic_ID']; ?>"><?php echo $licenciatura['lic_nombre']; ?></option>
 		  <?php endforeach; ?>
 	  </select>
+  </div>
+  <div class="form-group">
+    <label>Unidad Academica</label>
+    <select name="alu_unidad" class="form-control">
+      <?php foreach($unidades as $unidad): ?>
+        <option value="<?php echo $unidad['uni_ID']; ?>"><?php echo $unidad['uni_nombre']; ?></option>
+      <?php endforeach; ?>
+    </select>
   </div>
   <div class="form-group">
     <label>Egresado</label>

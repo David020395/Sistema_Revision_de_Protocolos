@@ -8,6 +8,8 @@
 		<tr>
 			<th scope="col">Cuenta</th>
 			<th scope="col">Nombre</th>
+			<th scope="col"></th>
+			<th scope="col"></th>
 			<th scope="col">Licenciatura</th>
 			<th scope="col">Correo</th>
 			<th scope="col">Egresado</th>
@@ -18,6 +20,8 @@
 		<?php  foreach($alumnos as $alumno) : ?>
 			<tr>
 				<td><?php echo $alumno['alu_numCuenta'] ?></td>
+				<td><?php echo $alumno['alu_ap'] ?></td>
+				<td><?php echo $alumno['alu_am'] ?></td>
 				<td><?php echo $alumno['alu_nombre'] ?></td>
 				<td><?php echo $alumno['lic_nombre'] ?></td>
 				<td><?php echo $alumno['alu_correoE'] ?></td>

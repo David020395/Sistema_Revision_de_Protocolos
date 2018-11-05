@@ -6,8 +6,8 @@
 
 		public function get_alumnos(){
 			$this->db->where('alu_activo', 1);
-			$this->db->select('alu_ID, alu_nombre, alu_numCuenta, alu_credencial, cre_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
-			$this->db->order_by('alumnos.alu_numCuenta');
+			$this->db->select('alu_ID, alu_nombre, alu_ap, alu_am, alu_numCuenta, alu_credencial, cre_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
+			$this->db->order_by('alumnos.alu_numCuenta','DESC');
 			$this->db->from('alumnos');
 			$this->db->join('licenciaturas', 'alumnos.alu_licenciatura = licenciaturas.lic_ID');
 			$this->db->join('credenciales', 'alumnos.alu_credencial = credenciales.cre_ID');
@@ -17,7 +17,7 @@
 
 		public function get_alumno($id){
 			$this->db->where('alu_ID', $id);
-			$this->db->select('alu_ID, alu_nombre, alu_licenciatura, alu_numCuenta, alu_credencial, cre_user as alu_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
+			$this->db->select('alu_ID, alu_nombre, alu_ap, alu_am, alu_licenciatura, alu_numCuenta, alu_credencial, cre_user as alu_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
 			$this->db->from('alumnos');
 			$this->db->join('licenciaturas', 'alumnos.alu_licenciatura = licenciaturas.lic_ID');
 			$this->db->join('credenciales', 'alumnos.alu_credencial = credenciales.cre_ID');
@@ -28,6 +28,8 @@
 		public function nuevo_alumno(){
 			$data = array(
 				'alu_nombre' => $this->input->post('alu_nombre'),
+				'alu_ap' => $this->input->post('alu_ap'),
+				'alu_am' => $this->input->post('alu_am'),
 				'alu_numCuenta' => $this->input->post('alu_numCuenta'),
 				'alu_correoE' => $this->input->post('alu_correoE'),
 				'alu_licenciatura' => $this->input->post('alu_licenciatura')
@@ -60,6 +62,8 @@
 			$query = $this->db->get();
 			$data = $query->row_array();
 			$data['alu_nombre'] = $this->input->post('alu_nombre');
+			$data['alu_ap'] = $this->input->post('alu_ap');
+			$data['alu_am'] = $this->input->post('alu_am');
 			$data['alu_numCuenta'] = $this->input->post('alu_numCuenta');
 			$data['alu_correoE'] = $this->input->post('alu_correoE');
 			$data['alu_licenciatura'] = $this->input->post('alu_licenciatura');

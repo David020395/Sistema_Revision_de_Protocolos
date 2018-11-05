@@ -5,6 +5,14 @@
 <?php echo form_open_multipart('profesores/actualizar'); ?>
   <input type="hidden" name="pro_ID" value="<?php echo $profesor['pro_ID']; ?>">
   <div class="form-group">
+    <label>Apellido Paterno</label>
+    <input type="text" class="form-control" name="pro_ap" placeholder="Apellido Paterno" value="<?php echo $profesor['pro_ap']; ?>">
+  </div>
+  <div class="form-group">
+    <label>Apellido Materno</label>
+    <input type="text" class="form-control" name="pro_am" placeholder="Apellido Materno" value="<?php echo $profesor['pro_am']; ?>">
+  </div>
+  <div class="form-group">
     <label>Nombre</label>
     <input type="text" class="form-control" name="pro_nombre" placeholder="Nombre" value="<?php echo $profesor['pro_nombre']; ?>">
   </div>

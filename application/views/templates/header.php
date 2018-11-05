@@ -31,6 +31,7 @@
 						<a href="javascript:void(0)" class="dropbtn">Administración</a>
 						<span class="dropdown-content">
 							<?php echo '<a href="'.base_url().'protocolos">Protocolos</a>' ?>
+							<!--<?php echo '<a href="'.base_url().'protocolos/asignados">Protocolos para preparar</a>' ?>-->
 							<?php echo '<a href="'.base_url().'profesores">Profesores</a>' ?>
 						</span>
 					</li>
@@ -41,14 +42,6 @@
 						<span class="dropdown-content">
 							<?php echo '<a href="'.base_url().'protocolos/nuevo">Registrar nuevo</a>' ?>
 							<?php echo '<a href="'.base_url().'protocolos">Mis protocolos</a>' ?>
-						</span>
-					</li>
-				<?php endif; ?>
-				<?php if(in_array(Array ( 'role' => 'crevisor' ), $this->session->userdata('roles'))): ?>
-					<li class="dropdown">
-						<a href="javascript:void(0)" class="dropbtn">Administración</a>
-						<span class="dropdown-content">
-							<?php echo '<a href="'.base_url().'protocolos/asignados">Protocolos para preparar</a>' ?>
 						</span>
 					</li>
 				<?php endif; ?>
