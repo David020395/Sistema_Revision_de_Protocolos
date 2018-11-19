@@ -17,10 +17,11 @@
 
 		public function get_alumno($id){
 			$this->db->where('alu_ID', $id);
-			$this->db->select('alu_ID, alu_nombre, alu_ap, alu_am, alu_licenciatura, alu_numCuenta, alu_credencial, cre_user as alu_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
+			$this->db->select('alu_ID, alu_nombre, alu_unidad, uni_ID, uni_nombre, alu_ap, alu_am, alu_licenciatura, alu_numCuenta, alu_credencial, cre_user as alu_user, alu_correoE, alu_egresado, lic_ID,  lic_nombre');
 			$this->db->from('alumnos');
 			$this->db->join('licenciaturas', 'alumnos.alu_licenciatura = licenciaturas.lic_ID');
 			$this->db->join('credenciales', 'alumnos.alu_credencial = credenciales.cre_ID');
+			$this->db->join('unidadacademica', 'alumnos.alu_unidad = unidadacademica.uni_ID');
 			$query = $this->db->get();
 			return $query->row_array();
 		}
@@ -32,7 +33,8 @@
 				'alu_am' => $this->input->post('alu_am'),
 				'alu_numCuenta' => $this->input->post('alu_numCuenta'),
 				'alu_correoE' => $this->input->post('alu_correoE'),
-				'alu_licenciatura' => $this->input->post('alu_licenciatura')
+				'alu_licenciatura' => $this->input->post('alu_licenciatura'),
+				'alu_unidad' => $this->input->post('alu_unidad')
 			);
 			if($this->input->post('alu_egresado') == 1){
 				$data['alu_egresado'] = 1;
@@ -67,6 +69,7 @@
 			$data['alu_numCuenta'] = $this->input->post('alu_numCuenta');
 			$data['alu_correoE'] = $this->input->post('alu_correoE');
 			$data['alu_licenciatura'] = $this->input->post('alu_licenciatura');
+			$data['alu_unidad'] = $this->input->post('alu_unidad');
 			if($this->input->post('alu_egresado') == 1){
 				$data['alu_egresado'] = 1;
 			}else{
@@ -91,7 +94,14 @@
 			$this->db->where('cre_ID', $id['cre_ID']);
 			$this->db->from('credenciales');
 			$query = $this->db->get();
-			return $query->row_array();
+			$resultado = $query->row_array();
+			$idC = $resultado['cre_ID'];
+			$data = array(
+				'cre_ID_ref' => $idC,
+				'per_ID_ref' => 1
+			);
+			$this->db->insert('credencialpermisos', $data);
+			return $resultado;
 		}
 
 		public function get_id_for_cred($id){

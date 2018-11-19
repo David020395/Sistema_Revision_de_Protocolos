@@ -1,4 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -6,9 +7,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Sistema de administración de protocolos</title>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		<link rel="stylesheet" type="text/css" href='<?php echo base_url('assets/css/bootstrap413.min.css'); ?>' />
+		<link rel="stylesheet" type="text/css" href='<?php echo base_url('assets/css/bootstrap337.min.css'); ?>' />
+		<script type="text/javascript" src='<?php echo base_url('assets/js/jquery331.min.js'); ?>'></script>
+		<script type="text/javascript" src='<?php echo base_url('assets/js/bootstrap413.min.js'); ?>'></script>
 		<link rel="stylesheet" type="text/css" href='<?php echo base_url('assets/css/menu.css'); ?>' />
 	</head>
 	<body> <!--Este BODY se cierra en footer.php-->
@@ -19,8 +21,8 @@
 				<?php if(in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))): ?>
 					<button class="accordion">Administración</button>
 					<div class="panel">
+					  	<?php echo '<a href="'.base_url().'protocolos/solicitudes">Solicitudes</a>' ?><br/>
 					  	<?php echo '<a href="'.base_url().'protocolos">Protocolos</a>' ?><br/>
-						<?php echo '<a href="'.base_url().'protocolos/solicitudes">Solicitudes</a>' ?><br/>
 						<?php echo '<a href="'.base_url().'alumnos">Alumnos</a>' ?>
 					</div><br/>
 				<?php endif; ?>

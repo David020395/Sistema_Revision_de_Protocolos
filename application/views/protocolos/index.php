@@ -76,18 +76,20 @@
 								<span class="glyphicon glyphicon-eye-open"></span> Revisar
 					        </button>
 						</form>
-						<?php  echo form_open(base_url().'protocolos/editar'); ?>
-							<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
-							<button type="submit" class="btn btn-default btn-xs">
-								<span class="glyphicon glyphicon-pencil"></span> Editar
-					        </button>
-						</form>
 						<?php  echo form_open(base_url().'protocolos/download'); ?>
 							<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
 							<button type="submit" class="btn btn-default btn-xs">
 								<span class="glyphicon glyphicon-download-alt"></span> Descargar
 					        </button>
 						</form>
+						<?php if($protocolo['proc_estatus']==11 || $protocolo['proc_estatus']==7 || $protocolo['proc_estatus']==3): ?>
+							<?php  echo form_open(base_url().'protocolos/editar'); ?>
+								<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
+								<button type="submit" class="btn btn-default btn-xs">
+									<span class="glyphicon glyphicon-pencil"></span> Editar
+						        </button>
+							</form>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php  endforeach; ?>
@@ -130,14 +132,6 @@
 					        </button>
 						</form>
 					</td>
-					<td>
-						<?php  echo form_open(base_url().'protocolos/revisar'); ?>
-							<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
-							<button type="submit" class="btn btn-default btn-xs">
-								<span class="glyphicon glyphicon-edit"></span> Revisar
-					        </button>
-						</form>
-					</td>
 					<?php if(in_array(Array ( 'role' => 'crevisor' ), $this->session->userdata('roles'))): ?>
 						<td>
 							<?php  echo form_open(base_url().'protocolos/observaciones'); ?>
@@ -147,11 +141,31 @@
 						        </button>
 							</form>
 						</td>
+					<?php endif; ?>
+					<td>
+						<?php  echo form_open(base_url().'protocolos/revisar'); ?>
+							<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
+							<button type="submit" class="btn btn-default btn-xs">
+								<span class="glyphicon glyphicon-edit"></span> Revisar
+					        </button>
+						</form>
+					</td>
+					<?php if(!in_array(Array ( 'role' => 'crevisor' ), $this->session->userdata('roles'))): ?>
+						<td>
+							<?php  echo form_open(base_url().'protocolos/enviarRevision'); ?>
+								<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
+								<button type="submit" class="btn btn-default btn-xs">
+									<span class="glyphicon glyphicon-ok"></span> Enviar
+						        </button>
+							</form>
+						</td>
+					<?php endif; ?>
+					<?php if(in_array(Array ( 'role' => 'crevisor' ), $this->session->userdata('roles'))): ?>
 						<td>
 							<?php  echo form_open(base_url().'protocolos/compendio'); ?>
 								<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
 								<button type="submit" class="btn btn-default btn-xs">
-									<span class="glyphicon glyphicon-book"></span> Compendio
+									<span class="glyphicon glyphicon-ok"></span> Enviar
 						        </button>
 							</form>
 						</td>

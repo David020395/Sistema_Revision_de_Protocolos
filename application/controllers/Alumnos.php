@@ -2,7 +2,7 @@
 	class Alumnos extends CI_Controller{
 
 		public function index(){
-			if(!$this->session->userdata('logged_in')){
+			/*if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
 			}
 			if(!in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))){
@@ -15,7 +15,21 @@
 			
 			$this->load->view('templates/header');
 			$this->load->view('alumnos/index', $data);
-			$this->load->view('templates/footer');
+			$this->load->view('templates/footer');*/
+			require dirname( __FILE__ ) . '/PHPMailer/src/Exception.php';
+			require dirname( __FILE__ ) . '/PHPMailer/src/PHPMailer.php';
+			require dirname( __FILE__ ) . '/PHPMailer/src/SMTP.php';
+			$mail = new PHPMailer;
+			$mail->setFrom('sgpt.noreply@gmail.com', 'SGPT');
+			$mail->addAddress('miketapi05@gmail.com', 'My Friend');
+			$mail->Subject  = 'First PHPMailer Message';
+			$mail->Body     = 'Hi! This is my first e-mail sent through PHPMailer.';
+			if(!$mail->send()) {
+			  echo 'Message was not sent.';
+			  echo 'Mailer error: ' . $mail->ErrorInfo;
+			} else {
+			  echo 'Message has been sent.';
+			}
 		}
 
 		public function nuevo(){
@@ -29,6 +43,7 @@
 			$data['title'] = 'Registrar nuevo alumno';
 
 			$data['licenciaturas'] = $this->licenciaturas_model->get_licenciaturas();
+			$data['unidades'] = $this->unidades_model->get_unidades();
 
 			$this->form_validation->set_rules('alu_nombre', 'Nombre', 'required');
 			$this->form_validation->set_rules('alu_ap', 'Apellido Paterno', 'required');
@@ -36,6 +51,7 @@
 			$this->form_validation->set_rules('alu_user', 'Usuario', 'required|callback_revisar_usuario_disponible');
 			$this->form_validation->set_rules('alu_correoE', 'Correo Electronico', 'required');
 			$this->form_validation->set_rules('alu_licenciatura', 'Licenciatura', 'required');
+			$this->form_validation->set_rules('alu_unidad', 'Unidad Academica', 'required');
 
 			if($this->form_validation->run() === FALSE){
 				$this->load->view('templates/header');
@@ -70,10 +86,12 @@
 			}
 
 			$data['alumno'] = $this->alumnos_model->get_alumno($id);
-
 			$data['licenciaturas'] = $this->licenciaturas_model->get_licenciaturas();
+			$data['unidades'] = $this->unidades_model->get_unidades();
 
 			if(empty($data['alumno'])){
+				print_r("hola");
+				die();
 				show_404();
 			}
 

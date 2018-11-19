@@ -63,12 +63,11 @@
 				redirect('cred/login');
 			}
 			$cre_type = $this->session->userdata('cre_type');
-			print_r($cre_type);
 			if($cre_type==1){ //cambio para administrador
 				$data['email'] = $this->administradores_model->get_email_admin($this->session->userdata('user_dbn'));
 				$data['email'] = $data['email']['adm_correoE'];
 			}else if($cre_type==2){ //cambio para profesor
-				$data['email'] = $this->profesores_model->get_email_admin($this->session->userdata('user_dbn'));
+				$data['email'] = $this->profesores_model->get_email_profesor($this->session->userdata('user_dbn'));
 				$data['email'] = $data['email']['pro_correoE'];
 			}else if($cre_type==3){ //cambio para alumno
 				$data['email'] = $this->alumnos_model->get_email_alumno($this->session->userdata('user_dbn'));

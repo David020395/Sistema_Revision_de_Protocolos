@@ -347,6 +347,22 @@
 			$this->load->view('templates/footer');
 		}
 
+		public function repObservaciones(){
+			if(!$this->session->userdata('logged_in')){
+				redirect('cred/login');
+			}
+			if(!in_array(Array ( 'role' => 'crevisor' ), $this->session->userdata('roles'))){
+				redirect('cred/e403');
+			}
+			$data['title'] = 'Observaciones';
+			$data['proc_ID'] = $this->input->post('proc_ID');
+			$data['observaciones'] = $this->protocolos_model->get_observaciones();
+			$this->genObservacionesRep($data);
+			//$this->load->view('templates/header');
+			//$this->load->view('protocolos/observaciones', $data);
+			//$this->load->view('templates/footer');
+		}
+
 		public function compendio(){
 			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
@@ -376,5 +392,27 @@
 		}
 
 		public function asinc(){
+		}
+
+		private function genObservacionesRep($data){
+			require dirname( __FILE__ ) . '/FPDF/fpdf.php';
+			$pdf=new FPDF();
+			$pdf->AddPage();
+			$pdf->SetFont('Arial','B',16);
+			$pdf->Cell(40,10,'Observaciones');
+			$pdf->Ln(10);
+			$pdf->SetFont('Arial','',12);
+			foreach ($data['observaciones'] as $obs) {
+				$pdf->Ln(10);
+				$str1 = iconv('UTF-8', 'windows-1252', $obs['obs_autorap'].' '.$obs['obs_autoram'].' '.$obs['obs_autor']);
+				$pdf->Cell(40,10,$str1);
+				$pdf->Ln(10);
+				$pdf->Cell(40,10,$obs['obs_fecha']);
+				$pdf->Ln(10);
+				$str2 = iconv('UTF-8', 'windows-1252', $obs['obs_descripcion']);
+				$pdf->Write(10,$str2);
+				$pdf->Ln(10);
+			}
+			$pdf->Output('File.pdf','D');
 		}
 	}

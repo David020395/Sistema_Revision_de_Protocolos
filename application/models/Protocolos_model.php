@@ -183,7 +183,7 @@
 		public function get_observaciones(){
 			$proc_ID = $this->input->post('proc_ID');
 			$this->db->where('proc_ID_ref', $proc_ID);
-			$this->db->select('obs_ID, pro_nombre as obs_autor, obs_fecha, obs_descripcion, rev_ID_ref');
+			$this->db->select('obs_ID, pro_nombre as obs_autor, pro_ap as obs_autorap, pro_am as obs_autoram, obs_fecha, obs_descripcion, rev_ID_ref');
 			$this->db->order_by('obs_fecha','DESC');
 			$this->db->from('observaciones');
 			$this->db->join('revisorproc', 'revisorproc.rev_ID = observaciones.rev_ID_ref');
