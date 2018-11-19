@@ -1,4 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require dirname( __FILE__ ) . '/../../vendor/autoload.php';
+
 	class Alumnos extends CI_Controller{
 
 		public function index(){
@@ -16,19 +20,26 @@
 			$this->load->view('templates/header');
 			$this->load->view('alumnos/index', $data);
 			$this->load->view('templates/footer');*/
-			require dirname( __FILE__ ) . '/PHPMailer/src/Exception.php';
-			require dirname( __FILE__ ) . '/PHPMailer/src/PHPMailer.php';
-			require dirname( __FILE__ ) . '/PHPMailer/src/SMTP.php';
-			$mail = new PHPMailer;
-			$mail->setFrom('sgpt.noreply@gmail.com', 'SGPT');
-			$mail->addAddress('miketapi05@gmail.com', 'My Friend');
-			$mail->Subject  = 'First PHPMailer Message';
-			$mail->Body     = 'Hi! This is my first e-mail sent through PHPMailer.';
-			if(!$mail->send()) {
-			  echo 'Message was not sent.';
-			  echo 'Mailer error: ' . $mail->ErrorInfo;
-			} else {
-			  echo 'Message has been sent.';
+			try {
+				$mail = new PHPMailer(TRUE);
+				$mail->setFrom('sgpt.noreply@gmail.com', 'FI-Uaemex Proceso de Titulacion');
+				$mail->isSMTP();
+				$mail->Host = 'smtp.gmail.com';
+				$mail->SMTPAuth = TRUE;
+				$mail->SMTPSecure = 'tls';
+				$mail->Username = 'sgpt.noreply@gmail.com';
+				$mail->Password = '644835MIKE';
+				$mail->Port = 587;
+
+				$mail->addAddress('miketapi05@gmail.com');
+				$mail->Subject = 'Force';
+				$mail->Body = 'There is a great disturbance in the Force2.';
+
+				$mail->send();
+			}catch (Exception $e){
+				echo $e->errorMessage();
+			}catch (\Exception $e){
+				echo $e->getMessage();
 			}
 		}
 
