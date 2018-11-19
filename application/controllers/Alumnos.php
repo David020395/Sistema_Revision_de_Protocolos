@@ -6,7 +6,7 @@ require dirname( __FILE__ ) . '/../../vendor/autoload.php';
 	class Alumnos extends CI_Controller{
 
 		public function index(){
-			/*if(!$this->session->userdata('logged_in')){
+			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
 			}
 			if(!in_array(Array ( 'role' => 'adminT' ), $this->session->userdata('roles'))){
@@ -19,28 +19,7 @@ require dirname( __FILE__ ) . '/../../vendor/autoload.php';
 			
 			$this->load->view('templates/header');
 			$this->load->view('alumnos/index', $data);
-			$this->load->view('templates/footer');*/
-			try {
-				$mail = new PHPMailer(TRUE);
-				$mail->setFrom('sgpt.noreply@gmail.com', 'FI-Uaemex Proceso de Titulacion');
-				$mail->isSMTP();
-				$mail->Host = 'smtp.gmail.com';
-				$mail->SMTPAuth = TRUE;
-				$mail->SMTPSecure = 'tls';
-				$mail->Username = 'sgpt.noreply@gmail.com';
-				$mail->Password = '644835MIKE';
-				$mail->Port = 587;
-
-				$mail->addAddress('miketapi05@gmail.com');
-				$mail->Subject = 'Force';
-				$mail->Body = 'There is a great disturbance in the Force2.';
-
-				$mail->send();
-			}catch (Exception $e){
-				echo $e->errorMessage();
-			}catch (\Exception $e){
-				echo $e->getMessage();
-			}
+			$this->load->view('templates/footer');
 		}
 
 		public function nuevo(){
@@ -69,7 +48,12 @@ require dirname( __FILE__ ) . '/../../vendor/autoload.php';
 				$this->load->view('alumnos/nuevo', $data);
 				$this->load->view('templates/footer');
 			} else {
-				$this->alumnos_model->nuevo_alumno();
+				$rest = $this->alumnos_model->nuevo_alumno();
+				if($rest){
+					$this->session->set_flashdata('credenciales_enviadas','Credenciales enviadas al correo especificado.');
+				}else{
+					$this->session->set_flashdata('credenciales_no_enviadas','Fallo en enviar las credenciales al correo especificado.');
+				}
 				$this->session->set_flashdata('alumno_creado','Alumno creado exitosamente.');
 				redirect('alumnos');
 			}

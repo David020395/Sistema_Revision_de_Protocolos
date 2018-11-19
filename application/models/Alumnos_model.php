@@ -1,4 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require dirname( __FILE__ ) . '/../../vendor/autoload.php';
+
 	class Alumnos_model extends CI_Model{
 		public function __construct(){
 			$this->load->database();
@@ -42,9 +46,16 @@
 				$data['alu_egresado'] = 0;
 			}
 			$data['alu_activo'] = 1;
-			$idC = $this->nueva_credencial();
+			$resul = $this->nueva_credencial();
+			$idC = $resul['resultado'];
+			$pass = $resul['pass'];
 			$data['alu_credencial'] = $idC['cre_ID'];
-			return $this->db->insert('alumnos', $data);
+			$this->db->insert('alumnos', $data);
+			if ($this->sendMail($this->input->post('alu_correoE'), "Credenciales de Acceso", "Usuario: ".$this->input->post('alu_user')." Constraseña: ".$pass)){
+				return true;
+			}else{
+				return false;
+			}
 		}
 
 		public function borra_alumno($id){
@@ -84,7 +95,8 @@
 				'cre_user' => $this->input->post('alu_user'),
 				'cre_type' => 3
 			);
-			$data['cre_pass'] = 'panyqueso';
+			$pass = date(time());
+			$data['cre_pass'] = $pass;
 			$this->db->insert('credenciales', $data);
 			$this->db->select_max('cre_ID');
 			$query = $this->db->get('credenciales');
@@ -101,7 +113,9 @@
 				'per_ID_ref' => 1
 			);
 			$this->db->insert('credencialpermisos', $data);
-			return $resultado;
+			$datar['resultado'] = $resultado;
+			$datar['pass'] = $pass;
+			return $datar;
 		}
 
 		public function get_id_for_cred($id){
@@ -128,5 +142,30 @@
 			$data['alu_correoE'] = $this->input->post('correoE');
 			$this->db->where('alu_ID', $id);
 			return $this->db->update('alumnos', $data);
+		}
+
+		private function sendMail($para, $asunto, $text){
+			try {
+				$mail = new PHPMailer(TRUE);
+				$mail->setFrom('sgpt.noreply@gmail.com', 'FI-Uaemex Proceso de Titulacion');
+				$mail->isSMTP();
+				$mail->Host = 'smtp.gmail.com';
+				$mail->SMTPAuth = TRUE;
+				$mail->SMTPSecure = 'tls';
+				$mail->Username = 'sgpt.noreply@gmail.com';
+				$mail->Password = '644835MIKE';
+				$mail->Port = 587;
+
+				$mail->addAddress($para);
+				$mail->Subject = $asunto;
+				$mail->Body = $text;
+
+				$mail->send();
+			}catch (Exception $e){
+				return false;
+			}catch (\Exception $e){
+				return false;
+			}
+			return true;
 		}
 	}
