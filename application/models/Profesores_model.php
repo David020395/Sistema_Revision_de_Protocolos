@@ -21,7 +21,9 @@
 
 		public function get_profesores(){
 			$this->db->where('pro_activo', 1);
+			$this->db->select('pro_ID, tip_ID, tip_descripcion profesor_tipo, pro_tipo, pro_ap, pro_am, pro_nombre, pro_comite, pro_trabajosActivos');
 			$this->db->from('profesores');
+			$this->db->join('tipoprofesor', 'profesores.pro_tipo = tipoprofesor.tip_ID');
 			$query = $this->db->get();
 			return $query->result_array();
 		}

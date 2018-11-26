@@ -178,7 +178,7 @@
 			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
 			}
-			if(!in_array(Array ( 'role' => 'crevisor' ), $this->session->userdata('roles'))){
+			if(!in_array(Array ( 'role' => 'adminC' ), $this->session->userdata('roles'))){
 				redirect('cred/e403');
 			}
 			$proc_ID = $this->input->post('proc_ID');
@@ -213,9 +213,9 @@
 			date_default_timezone_set('America/Mexico_City');
 			$arc_fecha = date("Y-m-d h:i:sa", time());
 			$this->protocolos_model->nuevo_archivo($nom_arch, $ext, $proc_ID, $arc_fecha, $sec, 1);
-			$this->protocolos_model->cambia_estatus_protocolo($proc_ID,10);
+			$this->protocolos_model->cambia_estatus_protocolo($proc_ID,9);
 			$this->session->set_flashdata('protocolo_modificado','Protocolo actualizado exitosamente. Se notificara a los revisores su trabajo pendiente');
-			redirect('protocolos/asignados');
+			redirect('protocolos');
 		}
 
 		public function downloadP(){
@@ -292,7 +292,7 @@
 		public function assign(){
 			$proc_ID = $this->input->post('proc_ID');
 			$this->protocolos_model->nuevo_asignacion($proc_ID);
-			$this->protocolos_model->cambia_estatus_protocolo($proc_ID,9);
+			$this->protocolos_model->cambia_estatus_protocolo($proc_ID,10);
 			$this->session->set_flashdata('protocolo_asignado','Protocolo asignado exitosamente.');
 			redirect('protocolos');
 		}
@@ -315,21 +315,50 @@
 			if(!$this->session->userdata('logged_in')){
 				redirect('cred/login');
 			}
-			if(!in_array(Array ( 'role' => 'revisor' ), $this->session->userdata('roles'))){
+			if(!in_array(Array ( 'role' => 'revisor' ), $this->session->userdata('roles')) && !in_array(Array ( 'role' => 'crevisor' ), $this->session->userdata('roles'))){
 				redirect('cred/e403');
 			}
 			$data['proc_ID'] = $this->input->post('proc_ID');
 			$data['title'] = 'Observaciones sobre protocolo';
-			$this->form_validation->set_rules('obs_descripcion', 'Observaciones', 'required');
-			if($this->form_validation->run() === FALSE){
-				$this->load->view('templates/header');
-				$this->load->view('protocolos/revisar', $data);
-				$this->load->view('templates/footer');
-			} else {
-				$this->protocolos_model->nuevo_observacion();
-				$this->session->set_flashdata('revision_enviada','Observacion generada exitosamente');
-				redirect('protocolos');
+			$data['observacion'] = $this->protocolos_model->get_observacion($data['proc_ID'],$this->session->userdata('user_dbn'));
+			echo "<script type='text/javascript'>alert('se ha obtenido una observacion');</script>";
+			if(empty($data['observacion'])){
+				echo "<script type='text/javascript'>alert('esta vacio');</script>";
+			}else{
+				echo "<script type='text/javascript'>alert('no esta vacio');</script>";
 			}
+			if(!empty($data['observacion'])){
+				$this->editarRevisar($data);
+			}else{
+				$this->form_validation->set_rules('obs_descripcion', 'Observaciones', 'required');
+				if($this->form_validation->run() === FALSE){
+					$this->load->view('templates/header');
+					$this->load->view('protocolos/revisar', $data);
+					$this->load->view('templates/footer');
+				} else {
+					$this->protocolos_model->nuevo_observacion();
+					$this->session->set_flashdata('revision_guardada','Observacion guardada exitosamente');
+					redirect('protocolos');
+				}
+			}
+		}
+
+		public function editarRevisar($data){
+			if(!$this->session->userdata('logged_in')){
+				redirect('cred/login');
+			}
+			if(!in_array(Array ( 'role' => 'revisor' ), $this->session->userdata('roles'))){
+				redirect('cred/e403');
+			}
+			$this->load->view('templates/header');
+			$this->load->view('protocolos/editarRev', $data);
+			$this->load->view('templates/footer');
+		}
+
+		public function erevisar(){
+			$this->protocolos_model->guarda_observacion();
+			$this->session->set_flashdata('revision_guardada','Observacion guardada exitosamente');
+			redirect('protocolos');
 		}
 
 		public function observaciones(){
@@ -414,5 +443,21 @@
 				$pdf->Ln(10);
 			}
 			$pdf->Output('File.pdf','D');
+		}
+
+		public function enviarRevision(){
+			if(!$this->session->userdata('logged_in')){
+				redirect('cred/login');
+			}
+			if(!in_array(Array ( 'role' => 'revisor' ), $this->session->userdata('roles'))){
+				redirect('cred/e403');
+			}
+			$data['proc_ID'] = $this->input->post('proc_ID');
+			$data['title'] = 'Observaciones sobre protocolo';
+			$data['observacion'] = $this->protocolos_model->get_observacion($data['proc_ID'],$this->session->userdata('user_dbn'));
+			if(!empty($data['observacion'])){
+				$this->session->set_flashdata('revision_no_guardada','No existe una observacion pendiente.');
+			}
+			$this->protocolos_model->enviarRevision($data['observacion']);
 		}
 	}

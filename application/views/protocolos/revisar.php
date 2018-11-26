@@ -8,5 +8,5 @@
   		<label>Observaciones</label>
   		<textarea name="obs_descripcion"></textarea>
   	</div>
-  	<button type="submit" class="btn btn-default">Enviar</button>
+  	<button type="submit" class="btn btn-default">Guardar</button>
 </form>

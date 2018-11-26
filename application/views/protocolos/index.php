@@ -99,14 +99,26 @@
 				<tr>
 					<td><?php echo $protocolo['proc_nombre'] ?></td>
 					<td><?php echo $protocolo['proc_iniciado'] ?></td>
-					<td>
-						<?php  echo form_open(base_url().'protocolos/asignar'); ?>
-							<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
-							<button type="submit" class="btn btn-default btn-xs">
-								<span class="glyphicon glyphicon-th-list"></span> Asignar
-					        </button>
-						</form>
-					</td>
+					<?php if($protocolo['proc_estatus']==9): ?>
+						<td>
+							<?php  echo form_open(base_url().'protocolos/asignar'); ?>
+								<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
+								<button type="submit" class="btn btn-default btn-xs">
+									<span class="glyphicon glyphicon-th-list"></span> Asignar
+						        </button>
+							</form>
+						</td>
+					<?php endif; ?>
+					<?php if($protocolo['proc_estatus']==8): ?>
+						<td>
+							<?php  echo form_open(base_url().'protocolos/editarP'); ?>
+								<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">
+								<button type="submit" class="btn btn-default btn-xs">
+									<span class="glyphicon glyphicon-th-list"></span> Cargar
+						        </button>
+							</form>
+						</td>
+					<?php endif; ?>
 					<td>
 						<?php  echo form_open(base_url().'protocolos/download'); ?>
 							<input type="hidden" name="proc_ID" value="<?php echo $protocolo['proc_ID'] ?>">

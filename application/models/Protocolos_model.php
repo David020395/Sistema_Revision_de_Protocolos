@@ -42,8 +42,8 @@
 		}
 
 		public function get_protocolos_for_adminC(){
-			$this->db->where('proc_estatus', 8);
-			$this->db->select('proc_ID, proc_nombre, proc_iniciado');
+			$this->db->where('proc_estatus >', 7);
+			$this->db->select('proc_ID, proc_nombre, proc_iniciado, proc_estatus');
 			$this->db->order_by('proc_iniciado','DESC');
 			$this->db->from('procesotitulacion');
 			$this->db->join('estatusprotocolo', 'estatusprotocolo.est_ID = procesotitulacion.proc_estatus');
@@ -183,6 +183,7 @@
 		public function get_observaciones(){
 			$proc_ID = $this->input->post('proc_ID');
 			$this->db->where('proc_ID_ref', $proc_ID);
+			$this->db->where('proc_ID_ref', $proc_ID);
 			$this->db->select('obs_ID, pro_nombre as obs_autor, pro_ap as obs_autorap, pro_am as obs_autoram, obs_fecha, obs_descripcion, rev_ID_ref');
 			$this->db->order_by('obs_fecha','DESC');
 			$this->db->from('observaciones');
@@ -256,5 +257,55 @@
 				$this->db->insert('revisorproc',$data);
 			}
 			return true;
+		}
+
+		public function get_observacion($protocolo, $profesor){
+			$this->db->where('proc_ID_ref', $protocolo);
+			$this->db->where('pro_ID_ref', $profesor);
+			$this->db->where('rev_activo', 1);
+			$this->db->select('rev_ID');
+			$this->db->from('revisorproc');
+			$this->db->order_by('rev_ID', 'DESC');
+			$query = $this->db->get();
+			$id = $query->row_array();
+			$id = $id['rev_ID'];
+			$this->db->where('rev_ID_ref', $id);
+			$this->db->from('observaciones');
+			$query = $this->db->get();
+			return $query->row_array();
+		}
+
+		public function guarda_observacion(){
+			$obs_ID = $this->input->post('obs_ID');
+			$proc_ID = $this->input->post('proc_ID');
+			$obs_enviado = $this->input->post('obs_enviado');
+			if($obs_enviado == 0){
+				$this->db->where('obs_ID', $obs_ID);
+				$this->db->from('observaciones');
+				$query = $this->db->get();
+				$data = $query->row_array();
+				$obs_descripcion = $this->input->post('obs_descripcion');
+				$data['obs_descripcion'] = $obs_descripcion;
+				$this->db->where('obs_ID', $obs_ID);
+				return $this->db->update('observaciones', $data);
+			}else{
+				$rev_ID = $this->get_rev($proc_ID, $this->session->userdata('user_dbn'));
+				$rev_ID = $rev_ID['rev_ID'];
+				$obs_descripcion = $this->input->post('obs_descripcion');
+				$data = array(
+					'rev_ID_ref' => $rev_ID,
+					'obs_descripcion' => $obs_descripcion
+				);
+				return $this->db->insert('observaciones',$data);
+			}
+		}
+
+		public function enviarRevision($observacion){
+			$observacion['obs_enviado'] = 1;
+			$obs_ID = $observacion['obs_ID'];
+			date_default_timezone_set('America/Mexico_City');
+			$observacion['obs_enviado'] = date("Y-m-d h:i:sa", time());
+			$this->db->where('obs_ID', $obs_ID);
+			return $this->db->update('observaciones', $data);
 		}
 	}

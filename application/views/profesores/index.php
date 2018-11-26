@@ -23,7 +23,7 @@
 				<td><?php echo $prof['pro_ap'] ?></td>
 				<td><?php echo $prof['pro_am'] ?></td>
 				<td><?php echo $prof['pro_nombre'] ?></td>
-				<td><?php echo $prof['pro_tipo'] ?></td>
+				<td><?php echo $prof['profesor_tipo'] ?></td>
 				<td><span class="<?php if($prof['pro_comite']) echo 'glyphicon glyphicon-ok'; else echo 'glyphicon glyphicon-minus'; ?>"></span></td>
 				<td><?php echo $prof['pro_trabajosActivos'] ?></td>
 				<td>
